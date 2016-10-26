@@ -23,6 +23,9 @@ import com.codahale.metrics.logback.InstrumentedAppender;
 import com.ryantenney.metrics.spring.config.annotation.EnableMetrics;
 import com.ryantenney.metrics.spring.config.annotation.MetricsConfigurerAdapter;
 
+/**
+ * Spring Boot main class.
+ */
 @Configuration
 @ComponentScan
 @EnableMetrics
@@ -30,26 +33,41 @@ import com.ryantenney.metrics.spring.config.annotation.MetricsConfigurerAdapter;
 public class Application extends MetricsConfigurerAdapter {
 
 	private MetricRegistry registry;
-	
+
+    /**
+     * Spring Boot entry point method.
+     * @param args ignored arguments
+     */
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(Application.class);
 		app.run();
 	}
 
-	@Bean
-	public RestProvider getRestProvider() {
+    /**
+     * Creates new REST provider class.
+     * @return REST provider
+     */
+    @Bean
+    public RestProvider getRestProvider() {
 		return new RestProvider();
 	}
-	
+
+    /**
+     * Creates new instrumented HTTP client and exposes it as Spring bean.
+     * @return HTTP client
+     */
 	@Bean
-	public HttpClient getHttpClient() {
+    public HttpClient getHttpClient() {
 		return new InstrumentedHttpClient(getMetricRegistry(),
 			HttpClientMetricNameStrategies.QUERYLESS_URL_AND_METHOD
 		);
     }
-	
+
+    /**
+     * {@inheritDoc}
+     */
 	@Override
-	public MetricRegistry getMetricRegistry() {
+    public MetricRegistry getMetricRegistry() {
 		
 		if (this.registry == null) {
 			registry = new MetricRegistry();
@@ -72,13 +90,19 @@ public class Application extends MetricsConfigurerAdapter {
 		return registry;
 	}
 
-	@Override
-	public HealthCheckRegistry getHealthCheckRegistry() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public HealthCheckRegistry getHealthCheckRegistry() {
 		return new HealthCheckRegistry();
 	}
-	
-	@Override
-	public void configureReporters(MetricRegistry metricRegistry) {
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void configureReporters(MetricRegistry metricRegistry) {
 		JmxReporter.forRegistry(metricRegistry).build().start();
 	}	
 }

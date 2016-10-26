@@ -10,6 +10,9 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.annotation.Timed;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Class that provides actual REST requests support.
+ */
 public class RestProvider {
 	
 	@Autowired
@@ -18,8 +21,13 @@ public class RestProvider {
 	@Autowired
 	private MetricRegistry registry;
 	
-	@Timed
-	public HttpResponse get(URI uri) {
+    /**
+     * Actual method that invokes OpenWeatherMap.org public API.
+     * @param uri URL where API request is sent to
+     * @return HTTP response
+     */
+    @Timed
+    public HttpResponse get(URI uri) {
 		try {
 			registry.counter(MetricRegistry.name(RestProvider.class, "counter")).inc();
 			

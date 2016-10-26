@@ -1,6 +1,7 @@
 package com.sample.metrics;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,27 +19,32 @@ import com.codahale.metrics.annotation.Timed;
 
 @Controller
 @EnableAutoConfiguration
-public class TestController {
+class TestController {
 		
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestController.class);
 	
 	@Autowired
     private RestProvider restProvider;
 
+    /**
+     * Method that handles /test/api HTTP GET call
+     * @param request HTTP request
+     * @param response HTTP response
+     * @return response as String
+     */
 	@Timed
 	@ResponseBody
 	@RequestMapping("/test/api")
-	public String process(HttpServletRequest request, HttpServletResponse response) 
-		throws Exception {
+    public String process(HttpServletRequest request, HttpServletResponse response)
+		throws URISyntaxException {
 		
 		LOGGER.info("Processing Request");
         String appId = System.getProperty("APP_ID");
         String url = "http://api.openweathermap.org/data/2.5/weather?q=Bristol,CT&APPID=" + appId;
         LOGGER.info("URL={}", url);
 		
-		// get first request
-		HttpResponse resp =
-			restProvider.get(new URI(url));
+		// Get first request
+		HttpResponse resp = restProvider.get(new URI(url));
 		return resp.getEntity().toString();
 	}
 }
