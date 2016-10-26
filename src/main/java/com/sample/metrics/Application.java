@@ -1,5 +1,6 @@
 package com.sample.metrics;
 
+import com.codahale.metrics.httpclient.InstrumentedHttpClients;
 import org.apache.http.client.HttpClient;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -14,7 +15,6 @@ import ch.qos.logback.classic.LoggerContext;
 import com.codahale.metrics.JmxReporter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.health.HealthCheckRegistry;
-import com.codahale.metrics.httpclient.InstrumentedHttpClient;
 import com.codahale.metrics.httpclient.HttpClientMetricNameStrategies;
 import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
@@ -58,9 +58,8 @@ public class Application extends MetricsConfigurerAdapter {
      */
 	@Bean
     public HttpClient getHttpClient() {
-		return new InstrumentedHttpClient(getMetricRegistry(),
-			HttpClientMetricNameStrategies.QUERYLESS_URL_AND_METHOD
-		);
+		return InstrumentedHttpClients.createDefault(getMetricRegistry(),
+			HttpClientMetricNameStrategies.QUERYLESS_URL_AND_METHOD);
     }
 
     /**

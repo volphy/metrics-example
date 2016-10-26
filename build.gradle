@@ -1,9 +1,9 @@
 buildscript {
     ext {
         springBootVersion = "1.4.1.RELEASE"
-        codahaleMetricsVersion = "3.0.1"
+        dropwizardMetricsVersion = "3.1.2"
         httpClientVersion = "4.5.2"
-        metricsSpringVersion = "3.0.1"
+        metricsSpringVersion = "3.0.2"
     }
 
 	repositories {
@@ -35,12 +35,12 @@ dependencies {
 	compile 'org.springframework.boot:spring-boot-starter-aop'
     compile "org.apache.httpcomponents:httpclient:${httpClientVersion}"
 	compile "org.apache.httpcomponents:httpclient-cache:${httpClientVersion}"
-	compile "com.codahale.metrics:metrics-core:${codahaleMetricsVersion}"
-	compile "com.codahale.metrics:metrics-logback:${codahaleMetricsVersion}"
-	compile "com.codahale.metrics:metrics-httpclient:${codahaleMetricsVersion}"
-	compile "com.codahale.metrics:metrics-jvm:${codahaleMetricsVersion}"
-	compile "com.codahale.metrics:metrics-healthchecks:${codahaleMetricsVersion}"
-	compile "com.codahale.metrics:metrics-jetty8:${codahaleMetricsVersion}"
+	compile "io.dropwizard.metrics:metrics-core:${dropwizardMetricsVersion}"
+	compile "io.dropwizard.metrics:metrics-logback:${dropwizardMetricsVersion}"
+	compile "io.dropwizard.metrics:metrics-httpclient:${dropwizardMetricsVersion}"
+	compile "io.dropwizard.metrics:metrics-jvm:${dropwizardMetricsVersion}"
+	compile "io.dropwizard.metrics:metrics-healthchecks:${dropwizardMetricsVersion}"
+	compile "io.dropwizard.metrics:metrics-jetty8:${dropwizardMetricsVersion}"
 	compile "com.ryantenney.metrics:metrics-spring:${metricsSpringVersion}"
 }
 
