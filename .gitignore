@@ -2,7 +2,10 @@
 .settings
 .classpath
 .project
-.gradle
-bin
-target
-build
+.gradle/**
+.idea/**
+bin/**
+target/**
+build/**
+out/**
+.idea/

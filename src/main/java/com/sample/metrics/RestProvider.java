@@ -2,19 +2,21 @@ package com.sample.metrics;
 
 import java.net.URI;
 
-import javax.inject.Inject;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.annotation.Timed;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class RestProvider {
 	
-	@Inject private HttpClient httpClient;
-	@Inject private MetricRegistry registry;
+	@Autowired
+	private HttpClient httpClient;
+
+	@Autowired
+	private MetricRegistry registry;
 	
 	@Timed
 	public HttpResponse get(URI uri) {

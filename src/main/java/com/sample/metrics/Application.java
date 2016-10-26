@@ -14,8 +14,8 @@ import ch.qos.logback.classic.LoggerContext;
 import com.codahale.metrics.JmxReporter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.health.HealthCheckRegistry;
-import com.codahale.metrics.httpclient.HttpClientMetricNameStrategies;
 import com.codahale.metrics.httpclient.InstrumentedHttpClient;
+import com.codahale.metrics.httpclient.HttpClientMetricNameStrategies;
 import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import com.codahale.metrics.jvm.ThreadStatesGaugeSet;
@@ -43,10 +43,10 @@ public class Application extends MetricsConfigurerAdapter {
 	
 	@Bean
 	public HttpClient getHttpClient() {
-		return new InstrumentedHttpClient(getMetricRegistry(), 
+		return new InstrumentedHttpClient(getMetricRegistry(),
 			HttpClientMetricNameStrategies.QUERYLESS_URL_AND_METHOD
 		);
-	}
+    }
 	
 	@Override
 	public MetricRegistry getMetricRegistry() {
