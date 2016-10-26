@@ -3,11 +3,16 @@ Metrics Example with Spring Boot
 
 This code base is an example of using CodaHale Metrics (fka Yammer Metrics) [http://metrics.codahale.com] and Spring Boot [http://projects.spring.io/spring-boot/].
 
+Pre-requisite:
+API key from openweathermap.org is required (free registration)
+
 # Running the Example
 
 1. Clone or fork the repository locally
-2. Run ``gradlew runJar`` on *nix/Mac or ``gradlew.bat runJar`` on Windows
+2. Run ``gradlew bootRun -DAPP_ID='your-api-key'`` on *nix/Mac 
+or ``gradlew.bat bootRun -DAPP_ID='your-api-key'`` on Windows
 3. Open browser to http://localhost:8080/test/api
+4. Check generated metrics atr http://localhost:8080/metrics
 
 # About the Example
 
