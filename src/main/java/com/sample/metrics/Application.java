@@ -3,6 +3,7 @@ package com.sample.metrics;
 import com.codahale.metrics.httpclient.InstrumentedHttpClients;
 import org.apache.http.client.HttpClient;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +23,7 @@ import com.codahale.metrics.jvm.ThreadStatesGaugeSet;
 import com.codahale.metrics.logback.InstrumentedAppender;
 import com.ryantenney.metrics.spring.config.annotation.EnableMetrics;
 import com.ryantenney.metrics.spring.config.annotation.MetricsConfigurerAdapter;
+import org.springframework.context.annotation.Scope;
 
 /**
  * Spring Boot main class.
@@ -31,8 +33,6 @@ import com.ryantenney.metrics.spring.config.annotation.MetricsConfigurerAdapter;
 @EnableMetrics
 @EnableAutoConfiguration
 public class Application extends MetricsConfigurerAdapter {
-
-	private MetricRegistry registry;
 
     /**
      * Spring Boot entry point method.
@@ -65,29 +65,28 @@ public class Application extends MetricsConfigurerAdapter {
     /**
      * {@inheritDoc}
      */
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 	@Override
     public MetricRegistry getMetricRegistry() {
-		
-		if (this.registry == null) {
-			registry = new MetricRegistry();
-		
-			// register JVM metrics
-			registry.registerAll(new GarbageCollectorMetricSet());
-			registry.registerAll(new MemoryUsageGaugeSet());
-			registry.registerAll(new ThreadStatesGaugeSet());
-			 
-			// register logging metrics
-			LoggerContext factory = (LoggerContext) LoggerFactory.getILoggerFactory();
-			Logger root = factory.getLogger(Logger.ROOT_LOGGER_NAME);
-	
-			InstrumentedAppender metrics = new InstrumentedAppender(registry);
-			metrics.setContext(root.getLoggerContext());
-			metrics.start();
-			root.addAppender(metrics);
-		}
-		
-		return registry;
-	}
+        MetricRegistry registry = new MetricRegistry();
+
+        // register JVM metrics
+        registry.registerAll(new GarbageCollectorMetricSet());
+        registry.registerAll(new MemoryUsageGaugeSet());
+        registry.registerAll(new ThreadStatesGaugeSet());
+
+        // register logging metrics
+        LoggerContext factory = (LoggerContext) LoggerFactory.getILoggerFactory();
+        Logger root = factory.getLogger(Logger.ROOT_LOGGER_NAME);
+
+        InstrumentedAppender metrics = new InstrumentedAppender(registry);
+        metrics.setContext(root.getLoggerContext());
+        metrics.start();
+        root.addAppender(metrics);
+
+        return registry;
+    }
 
     /**
      * {@inheritDoc}
